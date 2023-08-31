@@ -1,0 +1,29 @@
+{% extends "common/base.html" %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages mb-2 mt-2 p-0">
+    {% for message in messages %}
+    <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% for order in orders %}
+    <div class="card row pb-2 mb-2 mt-2">
+        <div class="col-md-12">
+            <h2>Order #{{ order.id }}</h2>
+            <p><bold class="fw-bold">Order</bold>: {{ order.name }}</p>
+            <p><bold class="fw-bold">Description</bold>: {{ order.description|truncatechars:500 }}</p>
+            <p><bold class="fw-bold">Employee</bold>: {{ order.employee }}</p>
+
+            <form action="{% url 'orders:order-delete' order.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}
